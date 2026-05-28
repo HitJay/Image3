@@ -1,68 +1,113 @@
 # Image3 — AI 图像生成工作台
 
-基于 ComfyUI 的 AI 图像生成项目，聚焦趣味图像、手机壁纸、小红书内容创作。
+基于 API 的 AI 图像生成项目，聚焦趣味图像、手机壁纸、小红书内容创作。
 
-## 模型策略
+## 为什么用 API？
 
-- **主力模型**: FLUX / SDXL (img2img + ControlNet)
-- **轻量备选**: SD 1.5 (快速出图，适合草稿)
-- **增强工具**: IP-Adapter (风格迁移), ControlNet (构图控制), Upscaler (高清放大)
-
-## 项目结构
-
-```
-Image3/
-├── workflows/          # ComfyUI 工作流 JSON（API 格式）
-├── prompts/            # Prompt 模板库
-│   ├── wallpapers/     # 壁纸类
-│   ├── creative/       # 趣味创意
-│   └── xiaohongshu/    # 小红书内容
-├── output/             # 生成输出（不入 git）
-├── scripts/            # 自动化脚本
-├── src/image3/         # Python 工具库
-├── config/             # 配置文件
-└── tests/              # 测试
-```
+- **不挑硬件** — 8GB 显存也能跑最新模型（FLUX、GPT-Image-2 等）
+- **零部署** — 不用装 ComfyUI、下模型，配好 API Key 直接出图
+- **模型多** — 矩池云(MatPool) 提供 GPT-Image-2、FLUX、SD3.5 等
+- **支持 img2img** — 以图生图、风格迁移、壁纸生成全支持
 
 ## 快速开始
 
-### 1. 启动 ComfyUI
+### 1. 设置 API Key
 
 ```bash
-# 本地 ComfyUI（需先安装）
-comfy launch --background
+# 方式一：环境变量
+export IMAGE_API_KEY="your_matpool_api_key"
 
-# 或手动启动
-python main.py --listen 127.0.0.1 --port 8188
+# 方式二：.env 文件
+cp .env.example .env
+# 编辑 .env，填入你的 key
 ```
 
 ### 2. 生成图片
 
 ```bash
-# txt2img
-python scripts/generate.py --workflow workflows/txt2img.json \
-  --args '{"prompt": "一只猫在太空站", "seed": -1}'
+# 最简单的用法
+python3 scripts/generate.py --prompt "一只宇航员猫在太空站，数字艺术，4K"
 
-# img2img (以图生图)
-python scripts/generate.py --workflow workflows/img2img.json \
-  --input-image image=./input.jpg \
-  --args '{"prompt": "watercolor painting style", "denoise": 0.6}'
+# 用 prompt 模板
+python3 scripts/generate.py --category creative --prompt-name cat_astronaut
 
-# 批量壁纸
-python scripts/batch_wallpaper.py --theme "cyberpunk" --count 10
+# 随机抽一个 prompt
+python3 scripts/generate.py --category wallpapers --random-prompt
+
+# 批量生成 10 张
+python3 scripts/generate.py --category wallpapers --prompt-name cyberpunk --count 10
+
+# img2img 以图生图
+python3 scripts/generate.py --prompt "make it watercolor painting" \
+  --input-image ./photo.jpg --strength 0.5
 ```
 
-### 3. 小红书发布流程
+### 3. 批量出图
 
-1. 选题 → 从 `prompts/xiaohongshu/` 选模板
-2. 批量生成 → `scripts/batch_xhs.py --theme xxx --count 20`
-3. 挑选 → 人工筛选 6-9 张
-4. 排版 → 可直接用/加小红书模板边框
+```bash
+# 批量壁纸（16:9）
+python3 scripts/batch_wallpaper.py --theme cyberpunk --count 10
 
-## 硬件要求
+# 批量小红书内容（3:4 竖屏）
+python3 scripts/batch_xhs.py --theme mood_board --count 12
+```
 
-- NVIDIA GPU ≥ 8GB VRAM (SDXL) 或 ≥ 12GB (FLUX)
-- 或 ComfyUI Cloud (RTX 6000 Pro, 付费)
+### 4. 切换模型 / 供应商
+
+```bash
+# 指定模型
+python3 scripts/generate.py --prompt "..." --model flux-1.1-pro
+
+# 用 OpenAI DALL-E
+python3 scripts/generate.py --provider openai --api-key sk-xxx --prompt "..."
+
+# 自定义 API
+python3 scripts/generate.py --provider custom \
+  --api-base https://your-api.com --api-key xxx --model your-model \
+  --prompt "..."
+```
+
+## 项目结构
+
+```
+Image3/
+├── scripts/
+│   ├── generate.py          # 主生成脚本（API + ComfyUI 双模式）
+│   ├── batch_wallpaper.py   # 批量壁纸
+│   └── batch_xhs.py         # 批量小红书
+├── src/image3/
+│   ├── api_client.py        # API 客户端（MatPool/OpenAI 兼容）
+│   ├── client.py            # ComfyUI 本地客户端（可选）
+│   └── prompts.py           # Prompt 模板管理
+├── prompts/                 # 9 个精选 Prompt 模板
+│   ├── wallpapers/          # 赛博朋克 / 自然 / 抽象
+│   ├── creative/            # 猫宇航员 / 像素世界 / 秋叶狐狸
+│   └── xiaohongshu/         # 情绪板 / 平铺 / 色彩研究
+├── output/                  # 生成输出（gitignore）
+└── tests/                   # 15 个测试
+```
+
+## 支持的后端
+
+| 后端 | 方式 | 模型 |
+|------|------|------|
+| **MatPool (矩池云)** | API | GPT-Image-2, FLUX, SD3.5 |
+| **OpenAI** | API | DALL-E 3 |
+| **自定义 API** | API | 任何 OpenAI 兼容接口 |
+| **ComfyUI 本地** | 本地 GPU | SDXL, FLUX GGUF, SD1.5 |
+
+## Prompt 模板系统
+
+`prompts/` 目录下按类别组织 `.txt` 模板：
+
+```
+prompts/
+├── wallpapers/       # 壁纸：赛博朋克、自然风光、抽象几何
+├── creative/         # 趣味：猫宇航员、像素世界、魔法生物
+└── xiaohongshu/      # 小红书：情绪板、平铺摄影、色彩研究
+```
+
+新建一个模板就是新建一个 `.txt` 文件。
 
 ## License
 
