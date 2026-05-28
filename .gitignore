@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+
+# Environment
+.env
+*.env.local
+
+# Output images (large files)
+output/**/*.png
+output/**/*.jpg
+output/**/*.jpeg
+output/**/*.webp
+output/**/*.mp4
+output/**/*.gif
+!output/.gitkeep
+
+# ComfyUI
+ComfyUI/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache/
+*.log
