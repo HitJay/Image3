@@ -1,0 +1,55 @@
+{
+  "project": "浮世绘猫 · Ukiyo-e Cats",
+  "created": "2026-05-28",
+  "model": "Nano-Banana-Spot",
+  "provider": "MatPool",
+  "size": "768×1024 (3:4 portrait)",
+  "total": 6,
+  "price": "¥9.9 / 6张",
+  "delivery": "百度网盘",
+  "author": "复旦杰伦@小红书",
+  "images": [
+    {
+      "id": "ukiyo_01",
+      "name": "慵懒午后",
+      "name_en": "Lazy Afternoon",
+      "file": "ukiyo_1779983904_000.png",
+      "desc": "橘猫蜷于坐垫之上，障子门外日式庭院，锦鲤悠然游弋。柔和晨光洒落，朱红与靛蓝交织，致敬葛饰北斋笔意。"
+    },
+    {
+      "id": "ukiyo_02",
+      "name": "月下暗影",
+      "name_en": "Moonlit Shadow",
+      "file": "ukiyo_1779983927_000.png",
+      "desc": "黑猫独行瓦檐之上，新月如钩，松影斜横。深普鲁士蓝的夜空中蝙蝠掠过，致敬歌川国芳画风。"
+    },
+    {
+      "id": "ukiyo_03",
+      "name": "一叶知秋",
+      "name_en": "Autumn Leaf",
+      "file": "ukiyo_1779983959_000.png",
+      "desc": "白猫蓝瞳，扑向飘落的枫叶。身后朱红鸟居隐现，满目秋色，金色光线中透出灵动生机。"
+    },
+    {
+      "id": "ukiyo_04",
+      "name": "紫藤嬉戏",
+      "name_en": "Wisteria Play",
+      "file": "ukiyo_1779983988_000.png",
+      "desc": "双猫追逐嬉戏于紫藤花架之下，紫色花瀑垂落，石灯笼静立一旁。歌川广重风景画般的诗意构图。"
+    },
+    {
+      "id": "ukiyo_05",
+      "name": "浮世绘猫",
+      "name_en": "Ukiyo-e Cat",
+      "file": "ukiyo_1779984013_000.png",
+      "desc": "三花猫头戴斗笠，骑乘巨鲤破浪而出。神奈川冲浪里式的巨浪翻涌，动感十足，全系列最富张力的画面。"
+    },
+    {
+      "id": "ukiyo_06",
+      "name": "月下独酌",
+      "name_en": "Moonlit Solitude",
+      "file": "ukiyo_1779984032_000.png",
+      "desc": "灰猫静坐木廊，杯中茶与天上月对饮。樱花枝头探入画框，银灰与靛蓝的夜色中弥漫着侘寂之美。"
+    }
+  ]
+}
